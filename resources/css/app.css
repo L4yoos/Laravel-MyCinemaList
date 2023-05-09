@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.spinner {
+    position: absolute;
+}
+
+.svg-icon {
+    width: 2rem;
+    height: 2rem;
+  }
+  
+  .svg-icon path,
+  .svg-icon polygon,
+  .svg-icon rect {
+    fill: #fff;
+  }
+  
+  .svg-icon circle {
+    stroke: #fff;
+    stroke-width: 1;
+  }
+
+.svg-icon-add {
+    width: 2rem;
+    height: 2rem;
+  }
+  
+  .svg-icon-add path,
+  .svg-icon-add polygon,
+  .svg-icon-add rect {
+    fill: #fff;
+  }
+  
+  .svg-icon-add circle {
+    stroke: #fff;
+    stroke-width: 1;
+  }
