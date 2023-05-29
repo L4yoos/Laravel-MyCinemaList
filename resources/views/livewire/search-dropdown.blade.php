@@ -24,22 +24,63 @@
             x-show.transition.opacity="isOpen"
         >
             <ul>
-            @if($searchResults->count() > 0)
+                @if($searchResults->count() > 0)
                 @foreach ($searchResults as $result)
-                <li class="border-b border-gray-700">
-                    <a 
-                        href="{{ route('movies.show', $result['id'] ) }}" 
-                        class="block hover:bg-gray-700 px-3 py-3 flex items-center transition ease-in-out duration-150"
-                        @if ($loop->last) @keydown.tab.exact="isOpen = false" @endif
-                    >
-                    @if ($result['poster_path'])
-                        <img src="https://image.tmdb.org/t/p/w92/{{ $result['poster_path'] }}" alt="poster" class="w-16">
+                    @if ($result['media_type'] === 'movie')
+                        <li class="border-b border-gray-700">
+                            <a 
+                                href="{{ route('movies.show', $result['id'] ) }}" 
+                                class="block hover:bg-gray-700 px-3 py-3 flex items-center transition ease-in-out duration-150"
+                                @if ($loop->last) @keydown.tab.exact="isOpen = false" @endif
+                            >
+                            @if ($result['poster_path'])
+                                <img src="https://image.tmdb.org/t/p/w92/{{ $result['poster_path'] }}" alt="poster" class="w-16">
+                            @else
+                                <img src="https://via.placeholder.com/50x75" alt="poster" class="w-16">
+                            @endif
+
+                            @isset($result['title'])
+                                <span class="ml-4">{{ $result['title'] }}</span>
+                            @endisset
+                            </a>
+                        </li>
+                    @elseif ($result['media_type'] === 'tv')
+                        <li class="border-b border-gray-700">
+                            <a 
+                                href="{{ route('tv.show', $result['id'] ) }}" 
+                                class="block hover:bg-gray-700 px-3 py-3 flex items-center transition ease-in-out duration-150"
+                                @if ($loop->last) @keydown.tab.exact="isOpen = false" @endif
+                            >
+                            @if ($result['poster_path'])
+                                <img src="https://image.tmdb.org/t/p/w92/{{ $result['poster_path'] }}" alt="poster" class="w-16">
+                            @else
+                                <img src="https://via.placeholder.com/50x75" alt="poster" class="w-16">
+                            @endif
+
+                            @isset($result['name'])
+                                <span class="ml-4">{{ $result['name'] }}</span>
+                            @endisset
+                            </a>
+                        </li>
                     @else
-                        <img src="https://via.placeholder.com/50x75" alt="poster" class="w-16">
+                        <li class="border-b border-gray-700">
+                            <a 
+                                href="{{ route('actors.show', $result['id'] ) }}" 
+                                class="block hover:bg-gray-700 px-3 py-3 flex items-center transition ease-in-out duration-150"
+                                @if ($loop->last) @keydown.tab.exact="isOpen = false" @endif
+                            >
+                            @if ($result['profile_path'])
+                                <img src="https://image.tmdb.org/t/p/w92/{{ $result['profile_path'] }}" alt="poster" class="w-16">
+                            @else
+                                <img src="https://via.placeholder.com/50x75" alt="poster" class="w-16">
+                            @endif
+
+                            @isset($result['name'])
+                                <span class="ml-4">{{ $result['name'] }}</span>
+                            @endisset
+                            </a>
+                        </li>
                     @endif
-                    <span class="ml-4">{{ $result['title'] }}</span>
-                    </a>
-                </li>
                 @endforeach
             @else
                 <div class="px-3 py-3">No results for "{{ $search }}"</div>
