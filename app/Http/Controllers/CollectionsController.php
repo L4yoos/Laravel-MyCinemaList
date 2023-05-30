@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Collection;
 use App\Models\Movies_Collection;
 use App\Models\Tvshows_Collection;
-use App\ViewModels\CollectionMoviesViewModel;
+use App\Models\Actors_Collection;
+use App\ViewModels\CollectionCinemaViewModel;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
 
@@ -32,8 +33,13 @@ class CollectionsController extends Controller
             'collection_id', 'tvshow_id', 'watched_episodes', 'status', 'score', 'created_at'
         )->get();
 
+        $actorsCollection = Actors_Collection::where('collection_id', $collection_id)->select(
+            'collection_id', 'actor_id',
+        )->get();
+
         $userMovies = collect();
         $userTvShows = collect();
+        $userActors = collect();
 
         foreach ($moviesCollection as $movieB)
         {
@@ -53,9 +59,20 @@ class CollectionsController extends Controller
             $userTvShows->add(collect($tvShows)->put('score', $tvshowB->score)->put('status', $tvshowB->status)->put('release_date', $tvshowB->created_at)->put('watched_episodes', $tvshowB->watched_episodes));
         }
 
-        $viewModel = new CollectionMoviesViewModel(
+        foreach ($actorsCollection as $actorsB)
+        {
+            $actors = Http::withToken(config('services.tmdb.token'))
+            ->get('https://api.themoviedb.org/3/person/'.$actorsB->actor_id)
+            ->json();
+
+            $userActors->add(collect($actors));
+        }
+
+
+        $viewModel = new CollectionCinemaViewModel(
             $userMovies,
             $userTvShows,
+            $userActors
         );
 
         return view('collection', $viewModel);
@@ -125,6 +142,29 @@ class CollectionsController extends Controller
         $TvShow_From_Collection->score = $request->input('score');
         $TvShow_From_Collection->save();
 
+        return redirect()->route('collections.index', Auth::id());
+    }
+
+    public function storeActor(Request $request)
+    {
+        $Actor_From_Collection = new Actors_Collection();
+        $Actor_From_Collection->collection_id = Collection::Where('User_id', Auth::id())->value('id');
+        $Actor_From_Collection->actor_id = $request->id;
+        $Actor_From_Collection->save();
+
+        return redirect()->route('collections.index', Auth::id());
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function deleteActor(string $id)
+    {
+        $collection_id = Collection::Where('User_id', Auth::id())->value('id');
+        $actorsCollection = Actors_Collection::where('collection_id', $collection_id)
+            ->where('actor_id', $id)->firstOrFail();
+
+        $actorsCollection->delete();
         return redirect()->route('collections.index', Auth::id());
     }
 
@@ -198,13 +238,5 @@ class CollectionsController extends Controller
         }
 
         return redirect()->route('collections.index', Auth::id());
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }

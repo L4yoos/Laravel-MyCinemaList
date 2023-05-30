@@ -31,8 +31,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/collections/{user_id}', [CollectionsController::class, 'index'])->name('collections.index');
     Route::post('/collections/addMovie/{id}', [CollectionsController::class, 'storeMovie'])->name('collections.store');
     Route::post('/collections/addTvshow/{id}', [CollectionsController::class, 'storeTvShow'])->name('collections.TVstore');
+
+    Route::post('/collections/addActor/{id}', [CollectionsController::class, 'storeActor'])->name('collections.Actorstore');
+    Route::delete('/collections/delete/{id}', [CollectionsController::class, 'deleteActor'])->name('collections.Actordelete');
+
     Route::get('/collections/edit/{id}', [CollectionsController::class, 'edit'])->name('collections.edit');
     Route::put('/collections/update/{id}', [CollectionsController::class, 'update'])->name('collections.update');// Ogarnij roznice miedzy edit a update
+
 });
 
 Route::get('/dashboard', function () {

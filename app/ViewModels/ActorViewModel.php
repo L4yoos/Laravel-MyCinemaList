@@ -2,6 +2,7 @@
 
 namespace App\ViewModels;
 
+use App\Models\Actors_Collection;
 use Spatie\ViewModels\ViewModel;
 use Carbon\Carbon;
 
@@ -18,16 +19,19 @@ class ActorViewModel extends ViewModel
         $this->credits = $credits;
     }
 
+
+
     public function actor()
     {
         return collect($this->actor)->merge([
+            'UserHaveIt' => $this->checkIfUserHaveThis($this->actor['id']) ? collect($this->actor)->put('UserOwns', True) : collect($this->actor)->put('UserOwns', False),
             'profile_path' => $this->actor['profile_path'] 
                 ? 'https://image.tmdb.org/t/p/w300/'.$this->actor['profile_path']
                 : 'https://via.placeholder.com/300x350',
             'birthday' => Carbon::parse($this->actor['birthday'])->format('M d, Y'),
             'age' => Carbon::parse($this->actor['birthday'])->age,
         ])->only([
-            'birthday', 'age', 'profile_path', 'name', 'id', 'homepage', 'place_of_birth', 'biography'
+            'birthday', 'age', 'profile_path', 'name', 'id', 'homepage', 'place_of_birth', 'biography', 'UserHaveIt'
         ]);
     }
 
@@ -114,4 +118,12 @@ class ActorViewModel extends ViewModel
             ]);
         })->sortByDesc('release_year');
     }
+
+    private function checkIfUserHaveThis($actor)
+    {
+        $actors = Actors_Collection::Where('actor_id', $actor)->first();
+        if($actors) return true;
+        return false;
+    }
+
 }

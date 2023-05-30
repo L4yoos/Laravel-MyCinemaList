@@ -5,15 +5,17 @@ namespace App\ViewModels;
 use Spatie\ViewModels\ViewModel;
 use Carbon\Carbon;
 
-class CollectionMoviesViewModel extends ViewModel
+class CollectionCinemaViewModel extends ViewModel
 {
     public $userMovies;
     public $userTvShows;
+    public $userActors;
 
-    public function __construct($userMovies, $userTvShows)
+    public function __construct($userMovies, $userTvShows, $userActors)
     {
         $this->userMovies = $userMovies;
         $this->userTvShows = $userTvShows;
+        $this->userActors = $userActors;
     }
 
     public function userMovies()
@@ -24,6 +26,23 @@ class CollectionMoviesViewModel extends ViewModel
     public function userTvShows()
     {
         return $this->formatTv($this->userTvShows);
+    }
+
+    public function userActors()
+    {
+        return $this->formatActors($this->userActors);
+    }
+
+
+    private function formatActors($userActors)
+    {
+        return collect($userActors)->map(function($actor) {
+            return collect($actor)->merge([
+                'profile_path' => $actor['profile_path'] 
+                    ? 'https://image.tmdb.org/t/p/w300/'.$actor['profile_path']
+                    : 'https://via.placeholder.com/300x350',
+            ]);
+        });
     }
 
     private function formatMovies($userMovies)

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyMovieList</title>
+    <title>MyCinemaList</title>
 
     @vite('resources/css/app.css')
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -17,7 +17,7 @@
                 <li>
                     <a href="{{ route('movies.index') }}">
                         <div class="flex flex-row items-center">
-                        <h1 class="text-4xl font-semibold text-orange-500">MyMovieList</h1>
+                        <h1 class="text-4xl font-semibold text-orange-500">MyCinemaList</h1>
                         </div>
                     </a>
                 </li>
@@ -50,10 +50,6 @@
                                 </x-slot>
 
                                 <x-slot name="content">
-                                    <x-dropdown-link :href="route('profile.edit')">
-                                        {{ __('Profile') }}
-                                    </x-dropdown-link>
-
                                     <x-dropdown-link :href="route('collections.index', auth()->user()->id )">
                                         {{ __('Collection') }}
                                     </x-dropdown-link>

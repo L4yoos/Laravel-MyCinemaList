@@ -18,9 +18,4 @@ class Collection extends Model
         'user_id',
         'owner',
     ];
-
-    public function movieCollection() : HasMany
-    {
-        return $this->hasMany(Movies_Collection::class);
-    }
 }

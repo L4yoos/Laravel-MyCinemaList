@@ -37,8 +37,30 @@
             </ul>
         </div>
         <div class="md:ml-24">
+            <div class="flex inline-flex items-center">
             <h2 class="text-4xl font-semibold">{{ $actor['name'] }}</h2>
-            <div class="flex flex-wrap items-center text-gray-400 text-sm mt-1">
+            @if ($actor['UserHaveIt']['UserOwns'] == True)
+                <div></div>
+                @else
+                <div x-data="{ isOpen: false }"> <!-- Add-Button -->
+                    <div class="">
+                        <button
+                            @click="isOpen = true"
+                        >
+                        <form action="{{ route('collections.Actorstore', $actor['id']) }}" method="post">
+                            @csrf
+                            <button type="submit" class="bg-green-500 text-white rounded font-semibold px-2 py-2 ml-4 hover:bg-green-600">
+                                <svg class="svg-icon-add" viewBox="0 0 20 20">
+                                    <path d="M14.613,10c0,0.23-0.188,0.419-0.419,0.419H10.42v3.774c0,0.23-0.189,0.42-0.42,0.42s-0.419-0.189-0.419-0.42v-3.774H5.806c-0.23,0-0.419-0.189-0.419-0.419s0.189-0.419,0.419-0.419h3.775V5.806c0-0.23,0.189-0.419,0.419-0.419s0.42,0.189,0.42,0.419v3.775h3.774C14.425,9.581,14.613,9.77,14.613,10 M17.969,10c0,4.401-3.567,7.969-7.969,7.969c-4.402,0-7.969-3.567-7.969-7.969c0-4.402,3.567-7.969,7.969-7.969C14.401,2.031,17.969,5.598,17.969,10 M17.13,10c0-3.932-3.198-7.13-7.13-7.13S2.87,6.068,2.87,10c0,3.933,3.198,7.13,7.13,7.13S17.13,13.933,17.13,10"></path>
+                                </svg>
+                            </button>            
+                        </form> 
+                        </button>
+                    </div>
+                </div> <!-- Add-button -->
+                @endif
+            </div>
+            <div class="flex flex-wrap items-center text-gray-400 text-sm mt-1">      
                 <svg class="fill-current text-gray-400 hover:text-white w-4" viewBox="0 0 448 512">
                     <path d="M448 384c-28.02 0-31.26-32-74.5-32-43.43 0-46.825 32-74.75 32-27.695 0-31.454-32-74.75-32-42.842 0-47.218 32-74.5 32-28.148 0-31.202-32-74.75-32-43.547 0-46.653 32-74.75 32v-80c0-26.5 21.5-48 48-48h16V112h64v144h64V112h64v144h64V112h64v144h16c26.5 0 48 21.5 48 48v80zm0 128H0v-96c43.356 0 46.767-32 74.75-32 27.951 0 31.253 32 74.75 32 42.843 0 47.217-32 74.5-32 28.148 0 31.201 32 74.75 32 43.357 0 46.767-32 74.75-32 27.488 0 31.252 32 74.5 32v96zM96 96c-17.75 0-32-14.25-32-32 0-31 32-23 32-64 12 0 32 29.5 32 56s-14.25 40-32 40zm128 0c-17.75 0-32-14.25-32-32 0-31 32-23 32-64 12 0 32 29.5 32 56s-14.25 40-32 40zm128 0c-17.75 0-32-14.25-32-32 0-31 32-23 32-64 12 0 32 29.5 32 56s-14.25 40-32 40z"/>
                 </svg>
