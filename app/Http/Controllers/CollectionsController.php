@@ -16,10 +16,17 @@ class CollectionsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Collection $user_id)
+    public function index(Request $request, Collection $user_id)
     {
         $collection = Auth::user()->id;
         $collection_id = Collection::Where('User_id', Auth::id())->value('id');
+
+        if($request->sortBy) {
+            $sortBy = $request->sortBy;
+        }
+        else {
+            $sortBy = 'status'; //Default SortBy
+        }
 
         if($collection != $user_id['user_id']) {
             abort(403);
@@ -68,22 +75,14 @@ class CollectionsController extends Controller
             $userActors->add(collect($actors));
         }
 
-
         $viewModel = new CollectionCinemaViewModel(
             $userMovies,
             $userTvShows,
-            $userActors
+            $userActors,
+            $sortBy,
         );
 
         return view('collection', $viewModel);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**

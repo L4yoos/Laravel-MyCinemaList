@@ -10,22 +10,24 @@ class CollectionCinemaViewModel extends ViewModel
     public $userMovies;
     public $userTvShows;
     public $userActors;
+    public $sortBy;
 
-    public function __construct($userMovies, $userTvShows, $userActors)
+    public function __construct($userMovies, $userTvShows, $userActors, $sortBy)
     {
         $this->userMovies = $userMovies;
         $this->userTvShows = $userTvShows;
         $this->userActors = $userActors;
+        $this->sortBy = $sortBy;
     }
 
     public function userMovies()
     {
-        return $this->formatMovies($this->userMovies);
+        return $this->formatMovies($this->userMovies)->sortByDesc($this->sortBy);
     }
 
     public function userTvShows()
     {
-        return $this->formatTv($this->userTvShows);
+        return $this->formatTv($this->userTvShows)->sortBy($this->sortBy);;
     }
 
     public function userActors()
@@ -57,7 +59,7 @@ class CollectionCinemaViewModel extends ViewModel
             ])->only([
                 'poster_path', 'id', 'title', 'release_date', 'genres', 'score', 'status'
             ]);
-        })->sortByDesc('status');
+        });
     }
     
     private function formatTv($userTvShows)
@@ -72,7 +74,7 @@ class CollectionCinemaViewModel extends ViewModel
             ])->only([
                 'poster_path', 'id', 'name', 'release_date', 'genres', 'score', 'status', 'number_of_episodes', 'watched_episodes'
             ]);
-        })->sortByDesc('status');
+        });
     }
 }
 

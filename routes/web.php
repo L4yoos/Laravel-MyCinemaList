@@ -29,6 +29,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/actors/{id}', [ActorsController::class, 'show'])->name('actors.show');
 
     Route::get('/collections/{user_id}', [CollectionsController::class, 'index'])->name('collections.index');
+    Route::get('/collections/{slug}', [CollectionsController::class, 'switchSortBy'])->name('collections.switchSortBy');
+
     Route::post('/collections/addMovie/{id}', [CollectionsController::class, 'storeMovie'])->name('collections.store');
     Route::post('/collections/addTvshow/{id}', [CollectionsController::class, 'storeTvShow'])->name('collections.TVstore');
 
