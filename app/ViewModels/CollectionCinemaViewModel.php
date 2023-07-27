@@ -10,31 +10,32 @@ class CollectionCinemaViewModel extends ViewModel
     public $userMovies;
     public $userTvShows;
     public $userActors;
-    public $sortBy;
+    public $howManyMovies;
+    public $page;
 
-    public function __construct($userMovies, $userTvShows, $userActors, $sortBy)
+    public function __construct($userMovies, $userTvShows, $userActors, $howManyMovies, $page)
     {
         $this->userMovies = $userMovies;
         $this->userTvShows = $userTvShows;
         $this->userActors = $userActors;
-        $this->sortBy = $sortBy;
+        $this->howManyMovies = $howManyMovies;
+        $this->page = $page;
     }
 
     public function userMovies()
     {
-        return $this->formatMovies($this->userMovies)->sortByDesc($this->sortBy);
+        return $this->formatMovies($this->userMovies);
     }
 
     public function userTvShows()
     {
-        return $this->formatTv($this->userTvShows)->sortBy($this->sortBy);;
+        return $this->formatTv($this->userTvShows);
     }
 
     public function userActors()
     {
         return $this->formatActors($this->userActors);
     }
-
 
     private function formatActors($userActors)
     {

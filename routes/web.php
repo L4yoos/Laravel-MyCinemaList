@@ -5,6 +5,7 @@ use App\Http\Controllers\MoviesController;
 use App\Http\Controllers\ActorsController;
 use App\Http\Controllers\TvController;
 use App\Http\Controllers\CollectionsController;
+use App\Http\Controllers\RandomMovieController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,7 +29,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/actors/page/{page?}', [ActorsController::class, 'index']);
     Route::get('/actors/{id}', [ActorsController::class, 'show'])->name('actors.show');
 
+    Route::get('/random', [RandomMovieController::class, 'index'])->name('random.index');
+
     Route::get('/collections/{user_id}', [CollectionsController::class, 'index'])->name('collections.index');
+    Route::get('/collections/{user_id}/page/{page?}', [CollectionsController::class, 'index']);
     Route::get('/collections/{slug}', [CollectionsController::class, 'switchSortBy'])->name('collections.switchSortBy');
 
     Route::post('/collections/addMovie/{id}', [CollectionsController::class, 'storeMovie'])->name('collections.store');
@@ -39,7 +43,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/collections/edit/{id}', [CollectionsController::class, 'edit'])->name('collections.edit');
     Route::put('/collections/update/{id}', [CollectionsController::class, 'update'])->name('collections.update');// Ogarnij roznice miedzy edit a update
-
 });
 
 Route::get('/dashboard', function () {

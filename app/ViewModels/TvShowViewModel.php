@@ -24,8 +24,6 @@ class TvShowViewModel extends ViewModel
 
     public function tvshow()
     {
-
-
         return collect($this->tvshow)->merge([
             'UserHaveIt' => $this->checkIfUserHaveThis($this->tvshow['id']) ? collect($this->tvshow)->put('UserOwns', True) : collect($this->tvshow)->put('UserOwns', False),
             'poster_path' => 'https://image.tmdb.org/t/p/w500/'.$this->tvshow['poster_path']
@@ -44,9 +42,10 @@ class TvShowViewModel extends ViewModel
                     ]);
                 }),
             'images' => collect($this->tvshow['images']['backdrops'])->take(9),
+            'watch_providers' => $this->tvshow['watch/providers']['results'],
         ])->only([
             'poster_path', 'id', 'genres', 'name', 'vote_average', 'overview', 'first_air_date', 'credits' ,
-            'videos', 'images', 'crew', 'cast', 'images', 'created_by', 'number_of_episodes', 'UserHaveIt'
+            'videos', 'images', 'crew', 'cast', 'images', 'created_by', 'number_of_episodes', 'UserHaveIt', 'watch_providers'
         ]);
     }
 }

@@ -1,6 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
+    {{-- {{ dd($movie['watch_providers'] )}} --}}
     <div class="movie-info border-b border-gray-800">
         <div class="container mx-auto px-4 py-16 flex flex-col md:flex-row">
             <img src="{{ $movie['poster_path'] }}" alt="parasite" class="w-64 md:w-96">
@@ -104,6 +105,60 @@
                     @endforeach
                     </div>
                 </div>
+
+                {{-- @if(isset($movie['watch_providers']['PL']['flatrate'])) --}}
+                {{-- @foreach ($movie['watch_providers']['PL']['flatrate'] as $provider) --}}
+                @if(isset($movie['watch_providers']['PL']))
+                <div class="flex flex-row gap-2">
+                    @if(isset($movie['watch_providers']['PL']['flatrate']))
+                    <div class="mt-12">
+                        <h4 class="text-white font-semibold">Where Can u Watch?</h4>
+                        <div class="flex mt-4">
+                            @foreach ($movie['watch_providers']['PL']['flatrate'] as $provider)
+                            <div class="mr-8">
+                                <img src="https://image.tmdb.org/t/p/w300{{ $provider['logo_path' ]}}" alt="logo" class="w-16 md:w-16">
+                            </div>
+                        @endforeach
+                        </div>
+                    </div>
+                    @endif
+
+                    @if(isset($movie['watch_providers']['PL']['rent']))
+                    <div class="mt-12">
+                        <h4 class="text-white font-semibold">Where Can u Rent?</h4>
+                        <div class="flex mt-4">
+                        @foreach ($movie['watch_providers']['PL']['rent'] as $provider)
+                            <div class="mr-8">
+                                <img src="https://image.tmdb.org/t/p/w300{{ $provider['logo_path' ]}}" alt="logo" class="w-16 md:w-16">
+                            </div>
+                        @endforeach
+                        </div>
+                    </div>
+                    @endif
+
+                    @if(isset($movie['watch_providers']['PL']['buy']))
+                    <div class="mt-12">
+                        <h4 class="text-white font-semibold">Where Can u Buy?</h4>
+                        <div class="flex mt-4">
+                        @foreach ($movie['watch_providers']['PL']['buy'] as $provider)
+                            <div class="mr-8">
+                                <img src="https://image.tmdb.org/t/p/w300{{ $provider['logo_path' ]}}" alt="logo" class="w-16 md:w-16">
+                            </div>
+                        @endforeach
+                        </div>
+                    </div>
+                    @endif
+                </div>
+                @else
+                <div class="mt-8">
+                <h2 class="text-orange-500 font-semibold">{{ $movie['title'] }}:</h4>
+                    <p class="ml-8">
+                        Isn't Available in Poland ❌</br>
+                        Isn't Rentable in Poland ❌</br>
+                        Can't be purchased in Poland ❌</br>
+                    </p>
+                </div>
+                @endif
 
                 <div x-data="{ isOpen: false }">
                 @if (count($movie['videos']['results']) > 0)

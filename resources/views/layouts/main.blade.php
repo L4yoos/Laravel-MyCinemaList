@@ -7,6 +7,16 @@
     <title>MyCinemaList</title>
 
     @vite('resources/css/app.css')
+    
+ <link rel=”stylesheet”
+ href=" https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+
+
+
+
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <livewire:styles />
 </head>
@@ -35,7 +45,7 @@
                 <livewire:search-dropdown>
                 <div class="md:ml-4 mt-3 md:mt-0">
                     <a href="#">
-                        <div class="hidden sm:flex sm:items-center sm:ml-6">
+                        <div class="sm:flex sm:items-center sm:ml-6">
                             <x-dropdown align="right" width="48">
                                 <x-slot name="trigger">
                                     <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-gray-900 hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
@@ -52,6 +62,10 @@
                                 <x-slot name="content">
                                     <x-dropdown-link :href="route('collections.index', auth()->user()->id )">
                                         {{ __('Collection') }}
+                                    </x-dropdown-link>
+
+                                    <x-dropdown-link :href="route('random.index')">
+                                        {{ __('Random Movie') }}
                                     </x-dropdown-link>
 
                                     <form method="POST" action="{{ route('logout') }}">

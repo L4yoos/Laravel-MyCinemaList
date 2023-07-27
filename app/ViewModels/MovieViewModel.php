@@ -40,9 +40,10 @@ class MovieViewModel extends ViewModel
                 ]);
             }),
             'images' => collect($this->movie['images']['backdrops'])->take(9),
+            'watch_providers' => $this->movie['watch/providers']['results'],
         ])->only([
             'poster_path', 'id', 'genres', 'title', 'vote_average', 'overview', 'release_date', 'credits' ,
-            'videos', 'images', 'crew', 'cast', 'images', 'UserHaveIt'
+            'videos', 'images', 'crew', 'cast', 'images', 'UserHaveIt', 'watch_providers'
         ]);
     }
 }

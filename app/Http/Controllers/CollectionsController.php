@@ -2,24 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Collection;
+use Illuminate\Http\Request;
+use App\Models\Actors_Collection;
 use App\Models\Movies_Collection;
 use App\Models\Tvshows_Collection;
-use App\Models\Actors_Collection;
-use App\ViewModels\CollectionCinemaViewModel;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
+use App\ViewModels\CollectionCinemaViewModel;
+
 
 class CollectionsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, Collection $user_id)
+    public function index(Request $request, Collection $user_id, $page = 1)
     {
         $collection = Auth::user()->id;
         $collection_id = Collection::Where('User_id', Auth::id())->value('id');
+
+        $howManyMovies = Movies_Collection::Where('collection_id', $collection_id)->get();
+        $howManyMovies = count($howManyMovies->Where('status', 'Completed'));
 
         if($request->sortBy) {
             $sortBy = $request->sortBy;
@@ -34,11 +38,11 @@ class CollectionsController extends Controller
 
         $moviesCollection = Movies_Collection::where('collection_id', $collection_id)->select(
             'collection_id', 'movie_id', 'status', 'score', 'created_at'
-        )->get();
+        )->get()->sortByDesc($sortBy)->paginate(10);
 
         $tvshowsCollection = Tvshows_Collection::where('collection_id', $collection_id)->select(
             'collection_id', 'tvshow_id', 'watched_episodes', 'status', 'score', 'created_at'
-        )->get();
+        )->get()->sortByDesc($sortBy)->paginate(10);
 
         $actorsCollection = Actors_Collection::where('collection_id', $collection_id)->select(
             'collection_id', 'actor_id',
@@ -48,10 +52,12 @@ class CollectionsController extends Controller
         $userTvShows = collect();
         $userActors = collect();
 
+        // dump($moviesCollection);
+
         foreach ($moviesCollection as $movieB)
         {
             $movies = Http::withToken(config('services.tmdb.token'))
-            ->get('https://api.themoviedb.org/3/movie/'.$movieB->movie_id.'?append_to_response=credits,videos,images')
+            ->get('https://api.themoviedb.org/3/movie/'.$movieB->movie_id)
             ->json();
 
             $userMovies->add(collect($movies)->put('score', $movieB->score)->put('status', $movieB->status)->put('release_date', $movieB->created_at));
@@ -79,7 +85,8 @@ class CollectionsController extends Controller
             $userMovies,
             $userTvShows,
             $userActors,
-            $sortBy,
+            $howManyMovies,
+            $page,
         );
 
         return view('collection', $viewModel);
@@ -90,7 +97,7 @@ class CollectionsController extends Controller
      */
     public function storeMovie(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'score'       => 'required',
             'status'      => 'required',
         ]);
@@ -107,7 +114,7 @@ class CollectionsController extends Controller
 
     public function storeTvShow(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'score'                 => 'required',
             'status'                => 'required',
             'watched_episodes'    => 'required|int',
@@ -168,29 +175,13 @@ class CollectionsController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
 
         if($request->input('watched_episodes')) {
-            $validated = $request->validate([
+            $request->validate([
                 'score'                 => 'required',
                 'status'                => 'required',
                 'watched_episodes'    => 'required|int',
@@ -216,7 +207,7 @@ class CollectionsController extends Controller
                 $request->status = 'Watching';
             }
 
-            $tvshow = Tvshows_Collection::Where('tvshow_id', $id)
+            Tvshows_Collection::Where('tvshow_id', $id)
             ->update([
                     'score' =>$request->score,
                     'status'=>$request->status,
@@ -224,16 +215,16 @@ class CollectionsController extends Controller
                     ]);
         }
         else {
-        $validated = $request->validate([
-            'score'       => 'required',
-            'status'      => 'required',
-        ]);
+            $request->validate([
+                'score'       => 'required',
+                'status'      => 'required',
+            ]);
 
-        $movie = Movies_Collection::Where('movie_id', $id)
-            ->update([
-                    'score' => $request->input('score'),
-                    'status'=>$request->input('status'),
-                    ]);
+            Movies_Collection::Where('movie_id', $id)
+                ->update([
+                        'score' => $request->input('score'),
+                        'status'=>$request->input('status'),
+                        ]);
         }
 
         return redirect()->route('collections.index', Auth::id());

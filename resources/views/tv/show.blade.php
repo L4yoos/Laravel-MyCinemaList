@@ -54,7 +54,7 @@
                                                 <div>
                                                     <label for="score" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Score</label>
                                                     <select id="score" name="score" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                                        <option value="--">Select Score</option>
+                                                        <option value="-">Select Score</option>
                                                         <option value="10">(10) Masterpiece</option>
                                                         <option value="9">(9) Great</option>
                                                         <option value="8">(8) Very Good</option>
@@ -110,6 +110,23 @@
                     @endforeach
                     </div>
                 </div>
+
+                @if(isset($tvshow['watch_providers']['PL']['flatrate']))
+                <div class="mt-12">
+                    <h4 class="text-white font-semibold">Where Can u Watch?</h4>
+                    <div class="flex mt-4">
+                    @foreach ($tvshow['watch_providers']['PL']['flatrate'] as $provider)
+                        <div class="mr-8">
+                            <img src="https://image.tmdb.org/t/p/w300{{ $provider['logo_path' ]}}" alt="logo" class="w-8 md:w-16">
+                        </div>
+                    @endforeach
+                    </div>
+                </div>
+                @else
+                <div class="mt-12">
+                    <h4 class="text-white text-gray-400">The Tv Show isn't available on any platform in Poland</h4>
+                </div>
+                @endif
 
                 <div x-data="{ isOpen: false }">
                 @if (count($tvshow['videos']['results']) > 0)
