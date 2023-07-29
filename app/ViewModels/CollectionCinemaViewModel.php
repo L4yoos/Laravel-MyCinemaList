@@ -37,17 +37,6 @@ class CollectionCinemaViewModel extends ViewModel
         return $this->formatActors($this->userActors);
     }
 
-    private function formatActors($userActors)
-    {
-        return collect($userActors)->map(function($actor) {
-            return collect($actor)->merge([
-                'profile_path' => $actor['profile_path'] 
-                    ? 'https://image.tmdb.org/t/p/w300/'.$actor['profile_path']
-                    : 'https://via.placeholder.com/300x350',
-            ]);
-        });
-    }
-
     private function formatMovies($userMovies)
     {
         return collect($userMovies)->map(function($movie) {
@@ -74,6 +63,17 @@ class CollectionCinemaViewModel extends ViewModel
                 'genres' => collect($tvshow['genres'])->pluck('name')->take(3)->flatten()->implode(', '),
             ])->only([
                 'poster_path', 'id', 'name', 'release_date', 'genres', 'score', 'status', 'number_of_episodes', 'watched_episodes'
+            ]);
+        });
+    }
+
+    private function formatActors($userActors)
+    {
+        return collect($userActors)->map(function($actor) {
+            return collect($actor)->merge([
+                'profile_path' => $actor['profile_path'] 
+                    ? 'https://image.tmdb.org/t/p/w300/'.$actor['profile_path']
+                    : 'https://via.placeholder.com/300x350',
             ]);
         });
     }

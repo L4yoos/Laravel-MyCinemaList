@@ -38,11 +38,11 @@ class CollectionsController extends Controller
 
         $moviesCollection = Movies_Collection::where('collection_id', $collection_id)->select(
             'collection_id', 'movie_id', 'status', 'score', 'created_at'
-        )->get()->sortByDesc($sortBy)->paginate(10);
+        )->get()->sortByDesc($sortBy)->paginate(5);
 
         $tvshowsCollection = Tvshows_Collection::where('collection_id', $collection_id)->select(
             'collection_id', 'tvshow_id', 'watched_episodes', 'status', 'score', 'created_at'
-        )->get()->sortByDesc($sortBy)->paginate(10);
+        )->get()->sortByDesc($sortBy)->paginate(5);
 
         $actorsCollection = Actors_Collection::where('collection_id', $collection_id)->select(
             'collection_id', 'actor_id',

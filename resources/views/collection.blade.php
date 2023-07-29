@@ -6,10 +6,10 @@
     <p class="text-orange-500">You have currently <b>{{ $howManyMovies }}</b> watched so many movies.</p>
         <div class="flex flex-col md:flex-row uppercase tracking-wider text-lg font-semibold mt-4">
             <form action="{{ route('collections.index', Auth::id()) }}" method="get">
-            <button type="submit" name="sortBy" value="status">Status</button>
-            <button type="submit" name="sortBy" value="score">Score</button>
-            <button type="submit" name="sortBy" value="created_at">Time</button> 
-        </form>
+                <button type="submit" name="sortBy" value="status">Status</button>
+                <button type="submit" name="sortBy" value="score">Score</button>
+                <button type="submit" name="sortBy" value="created_at">Time</button> 
+            </form>
         </div>
         <div class="MyCinemalist-movies"> <!-- MyMovieList-movies -->
             <h2 class="uppercase tracking-wider text-orange-500 text-lg font-semibold text-center">ALL MOVIES</h2>

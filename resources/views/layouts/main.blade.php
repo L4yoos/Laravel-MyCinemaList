@@ -5,18 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MyCinemaList</title>
-
     @vite('resources/css/app.css')
-    
- <link rel=”stylesheet”
- href=" https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
-
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
-
-
-
-
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <livewire:styles />
 </head>
@@ -64,8 +53,8 @@
                                         {{ __('Collection') }}
                                     </x-dropdown-link>
 
-                                    <x-dropdown-link :href="route('random.index')">
-                                        {{ __('Random Movie') }}
+                                    <x-dropdown-link :href="route('generator.index')">
+                                        {{ __('Generator Movie') }}
                                     </x-dropdown-link>
 
                                     <form method="POST" action="{{ route('logout') }}">
@@ -89,6 +78,7 @@
     <footer class="border border-t border-gray-800">
         <div class="container mx-auto text-sm px-4 py-6">
             Powered by <a href="https://www.themoviedb.org/documentation/api" class="underline hover:text-gray-300">TMDb API</a>
+            Copryright &copy; 2023 MyCinemaList. Designed By <a href="https://github.com/L4yoos" class="underline hover:text-gray-300">Konrad Dalecki</a>
         </div>
     </footer>
     <livewire:scripts />

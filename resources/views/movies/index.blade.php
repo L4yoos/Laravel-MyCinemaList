@@ -25,5 +25,4 @@
             </div>
         </div>
     </div> <!-- End-Now-Playing-Movies -->
-    @include('sweetalert::alert')
 @endsection

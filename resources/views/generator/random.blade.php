@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container mx-auto px-4 pt-16">
-        <div class="popular-movies"> <!-- Popular-Movies -->
+        <div class="popular-movies"> <!-- Random-Movie -->
             <h2 class="uppercase tracking-wider text-orange-500 text-lg font-semibold text-center">Your Random Movie</h2>
             <div class="movie-info border-b border-gray-800">
                 <div class="container mx-auto px-4 py-16 flex flex-col md:flex-row">
@@ -185,6 +185,6 @@
                     </div>
                 </div>
             </div> <!-- End-Movie-Cast -->
-        </div> <!-- End-Popular-Movies -->
-    </div> <!-- End-Now-Playing-Movies -->
+        </div> <!-- End-Random-Movie -->
+    </div>
 @endsection
