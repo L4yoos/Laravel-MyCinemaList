@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MyCinemaList</title>
+    <link rel="icon" href="{{ url('img/favicon.png') }}">
     @vite('resources/css/app.css')
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <livewire:styles />
@@ -49,12 +50,16 @@
                                 </x-slot>
 
                                 <x-slot name="content">
-                                    <x-dropdown-link :href="route('collections.index', auth()->user()->id )">
+                                    <x-dropdown-link :href="route('collections.index', auth()->user()->collection->id )">
                                         {{ __('Collection') }}
                                     </x-dropdown-link>
 
                                     <x-dropdown-link :href="route('generator.index')">
                                         {{ __('Generator Movie') }}
+                                    </x-dropdown-link>
+                                    
+                                    <x-dropdown-link :href="route('profile.edit')">
+                                        {{ __('Settings') }}
                                     </x-dropdown-link>
 
                                     <form method="POST" action="{{ route('logout') }}">
@@ -81,6 +86,7 @@
             Copryright &copy; 2023 MyCinemaList. Designed By <a href="https://github.com/L4yoos" class="underline hover:text-gray-300">Konrad Dalecki</a>
         </div>
     </footer>
+    @include('sweetalert::alert')
     <livewire:scripts />
     @yield('scripts')
 </body>

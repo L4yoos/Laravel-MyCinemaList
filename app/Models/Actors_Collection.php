@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Actors_Collection extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'collection_id',
+        'actor_id',
+    ];
 }

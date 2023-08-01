@@ -59,6 +59,8 @@ class GeneratorMovieController extends Controller
             });
 
             if(empty($results)) {
+                alert()->info('Info', 'We are looking for a film like this, try again!');
+
                 return redirect()->route('generator.index');
             }
 

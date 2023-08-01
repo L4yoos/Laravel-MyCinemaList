@@ -19,8 +19,6 @@ class ActorViewModel extends ViewModel
         $this->credits = $credits;
     }
 
-
-
     public function actor()
     {
         return collect($this->actor)->merge([

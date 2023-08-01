@@ -33,27 +33,22 @@ Route::middleware('auth')->group(function () {
     Route::get('/generator/random', [GeneratorMovieController::class, 'random'])->name('generator.random');
     Route::get('/generator/genre', [GeneratorMovieController::class, 'genre'])->name('generator.genre');
 
-    Route::get('/collections/{user_id}', [CollectionsController::class, 'index'])->name('collections.index');
-    Route::get('/collections/{user_id}/page/{page?}', [CollectionsController::class, 'index']);
-
-    Route::post('/collections/addMovie/{id}', [CollectionsController::class, 'storeMovie'])->name('collections.store');
-    Route::post('/collections/addTvshow/{id}', [CollectionsController::class, 'storeTvShow'])->name('collections.TVstore');
-
-    Route::post('/collections/addActor/{id}', [CollectionsController::class, 'storeActor'])->name('collections.Actorstore');
-    Route::delete('/collections/delete/{id}', [CollectionsController::class, 'deleteActor'])->name('collections.Actordelete');
-
-    Route::get('/collections/edit/{id}', [CollectionsController::class, 'edit'])->name('collections.edit');
-    Route::put('/collections/update/{id}', [CollectionsController::class, 'update'])->name('collections.update');// Ogarnij roznice miedzy edit a update
-});
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::group(['prefix' => 'collections'], function() {
+        Route::get('{id}', [CollectionsController::class, 'index'])->name('collections.index');
+    
+        Route::post('addMovie/{id}', [CollectionsController::class, 'storeMovie'])->name('collections.store');
+        Route::post('addTvshow/{id}', [CollectionsController::class, 'storeTvShow'])->name('collections.TVstore');
+        Route::post('addActor/{id}', [CollectionsController::class, 'storeActor'])->name('collections.Actorstore');
+        
+        Route::delete('delete/{id}', [CollectionsController::class, 'deleteActor'])->name('collections.Actordelete');
+    
+        Route::get('edit/{id}', [CollectionsController::class, 'edit'])->name('collections.edit');
+        Route::put('update/{id}', [CollectionsController::class, 'update'])->name('collections.update');
+    });
 });
 
 require __DIR__.'/auth.php';

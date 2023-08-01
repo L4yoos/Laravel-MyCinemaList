@@ -9,31 +9,32 @@ use App\Models\Movies_Collection;
 use App\Models\Tvshows_Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+// use Illuminate\Support\Facades\Validator;
 use App\ViewModels\CollectionCinemaViewModel;
-
 
 class CollectionsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, Collection $user_id, $page = 1)
+    public function index(Request $request, Collection $id, $page = 1)
     {
+        // dd($id);
         $collection = Auth::user()->id;
-        $collection_id = Collection::Where('User_id', Auth::id())->value('id');
+        
+        if($collection != $id['user_id']) {
+            abort(403);
+        }
 
-        $howManyMovies = Movies_Collection::Where('collection_id', $collection_id)->get();
-        $howManyMovies = count($howManyMovies->Where('status', 'Completed'));
+        $collection_id = Auth::user()->collection->id;
+        
+        $howManyMovies = count(Movies_Collection::Where('collection_id', $collection_id)->Where('status', 'Completed')->get());
 
         if($request->sortBy) {
             $sortBy = $request->sortBy;
         }
         else {
             $sortBy = 'status'; //Default SortBy
-        }
-
-        if($collection != $user_id['user_id']) {
-            abort(403);
         }
 
         $moviesCollection = Movies_Collection::where('collection_id', $collection_id)->select(
@@ -51,8 +52,6 @@ class CollectionsController extends Controller
         $userMovies = collect();
         $userTvShows = collect();
         $userActors = collect();
-
-        // dump($moviesCollection);
 
         foreach ($moviesCollection as $movieB)
         {
@@ -102,14 +101,20 @@ class CollectionsController extends Controller
             'status'      => 'required',
         ]);
 
-        $Movie_From_Collection = new Movies_Collection();
-        $Movie_From_Collection->collection_id = Collection::Where('User_id', Auth::id())->value('id');
-        $Movie_From_Collection->movie_id = $request->id;
-        $Movie_From_Collection->status = $request->input('status');
-        $Movie_From_Collection->score = $request->input('score');
-        $Movie_From_Collection->save();
+        $collection_id = Auth::user()->collection->id;
+        
+        $movieCollection = [
+            'collection_id' => $collection_id,
+            'movie_id'      => $request->id,
+            'status'        => $request->status,
+            'score'         => $request->score,
+        ];
 
-        return redirect()->route('collections.index', Auth::id());
+        Movies_Collection::create($movieCollection);
+
+        toast('Movie has been Added!','success');
+
+        return redirect()->route('collections.index', $collection_id);
     }
 
     public function storeTvShow(Request $request)
@@ -117,75 +122,96 @@ class CollectionsController extends Controller
         $request->validate([
             'score'                 => 'required',
             'status'                => 'required',
-            'watched_episodes'    => 'required|int',
+            'watched_episodes'      => 'required|int|min:0',
         ]);
 
+        $collection_id = Auth::user()->collection->id;
         $tvShow = Http::withToken(config('services.tmdb.token'))
         ->get('https://api.themoviedb.org/3/tv/'.$request->id)
         ->json();
 
-        $TvShow_From_Collection = new Tvshows_Collection();
-        $TvShow_From_Collection->collection_id = Collection::Where('User_id', Auth::id())->value('id');
-        $TvShow_From_Collection->tvshow_id = $request->id;
-
         if($request->watched_episodes > $tvShow['number_of_episodes'])
         {
-            $TvShow_From_Collection->watched_episodes = $tvShow['number_of_episodes'];
-            $TvShow_From_Collection->status = 'Completed';
+            $tvShowCollection = [
+                'collection_id'     => $collection_id,
+                'tvshow_id'         => $request->id,
+                'watched_episodes'  => $tvShow['number_of_episodes'],
+                'status'            => 'Completed',
+                'score'             => $request->score,
+            ];
         }
-        else {
-            $TvShow_From_Collection->watched_episodes = $request->watched_episodes;
-            $TvShow_From_Collection->status = $request->input('status');
-        }
-
-        if($request->watched_episodes < 0)
+        else 
         {
-            $TvShow_From_Collection->watched_episodes = 0;
-            $TvShow_From_Collection->status = 'Watching';
+            $tvShowCollection = [
+                'collection_id'     => $collection_id,
+                'tvshow_id'         => $request->id,
+                'watched_episodes'  => $request->watched_episodes,
+                'status'            => $request->status,
+                'score'             => $request->score,
+            ];
         }
+        
+        Tvshows_Collection::create($tvShowCollection);
 
+        toast('Tv Show has been Added!','success');
 
-        $TvShow_From_Collection->score = $request->input('score');
-        $TvShow_From_Collection->save();
-
-        return redirect()->route('collections.index', Auth::id());
+        return redirect()->route('collections.index', $collection_id);
     }
 
     public function storeActor(Request $request)
     {
-        $Actor_From_Collection = new Actors_Collection();
-        $Actor_From_Collection->collection_id = Collection::Where('User_id', Auth::id())->value('id');
-        $Actor_From_Collection->actor_id = $request->id;
-        $Actor_From_Collection->save();
+        $collection_id = Auth::user()->collection->id;
+        $actorCollection = [
+            'collection_id' => $collection_id,
+            'actor_id'      => $request->id,
+        ];
 
-        return redirect()->route('collections.index', Auth::id());
+        Actors_Collection::create($actorCollection);
+
+        toast('Actor has been Added!','success');
+
+        return redirect()->route('collections.index', $collection_id);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function deleteActor(string $id)
+    public function deleteActor(int $id)
     {
-        $collection_id = Collection::Where('User_id', Auth::id())->value('id');
+        $collection_id = Auth::user()->collection->id;
         $actorsCollection = Actors_Collection::where('collection_id', $collection_id)
-            ->where('actor_id', $id)->firstOrFail();
+            ->where('actor_id', $id)->firstOrFail()
+            ->delete();
 
-        $actorsCollection->delete();
-        return redirect()->route('collections.index', Auth::id());
+        toast('Actor has been Deleted!','success'); // mie dziala idk czemu
+
+        return redirect()->route('collections.index', $collection_id);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, int $id)
     {
-
-        if($request->input('watched_episodes')) {
+        $collection_id = Auth::user()->collection->id;
+        if($request->input('watched_episodes')) 
+        {
             $request->validate([
                 'score'                 => 'required',
                 'status'                => 'required',
-                'watched_episodes'    => 'required|int',
+                'watched_episodes'      => 'required|int|min:0',
             ]);
+
+            // $validator = Validator::make($request->all(), [
+            //         'score'                 => 'required',
+            //         'status'                => 'required',
+            //         'watched_episodes'      => 'required|int|min:0'
+            // ]);
+
+            // if($validator->fails())
+            // {
+            //     return back()->with('error', $validator->messages()->all()[0])->withInput();
+            // }
 
             $tvShow = Http::withToken(config('services.tmdb.token'))
             ->get('https://api.themoviedb.org/3/tv/'.$request->id)
@@ -193,40 +219,39 @@ class CollectionsController extends Controller
 
             if($request->watched_episodes > $tvShow['number_of_episodes'])
             {
-                $request->watched_episodes = $tvShow['number_of_episodes'];
-                $request->status = 'Completed';
+                $request->watched_episodes  = $tvShow['number_of_episodes'];
+                $request->status            = 'Completed';
             }
             else {
-                $request->watched_episodes = $request->watched_episodes;
-                $request->status = $request->input('status');
-            }
-    
-            if($request->watched_episodes < 0)
-            {
-                $request->watched_episodes = 0;
-                $request->status = 'Watching';
+                $request->watched_episodes  = $request->watched_episodes;
+                $request->status            = $request->status;
             }
 
-            Tvshows_Collection::Where('tvshow_id', $id)
-            ->update([
-                    'score' =>$request->score,
-                    'status'=>$request->status,
-                    'watched_episodes'=>$request->watched_episodes,
+            Tvshows_Collection::Where('collection_id', $collection_id)
+                ->Where('tvshow_id', $id)
+                ->update([
+                    'score'             =>  $request->score,
+                    'status'            =>  $request->status,
+                    'watched_episodes'  =>  $request->watched_episodes,
                     ]);
         }
-        else {
+        else 
+        {
             $request->validate([
                 'score'       => 'required',
                 'status'      => 'required',
             ]);
 
-            Movies_Collection::Where('movie_id', $id)
+            Movies_Collection::Where('collection_id', $collection_id)
+                ->Where('movie_id', $id)
                 ->update([
-                        'score' => $request->input('score'),
-                        'status'=>$request->input('status'),
+                        'score'     =>  $request->score,
+                        'status'    =>  $request->status,
                         ]);
         }
 
-        return redirect()->route('collections.index', Auth::id());
+        toast('Update Complete!','success');
+        
+        return redirect()->route('collections.index', $collection_id);
     }
 }

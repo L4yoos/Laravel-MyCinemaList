@@ -122,7 +122,7 @@
                 <div class="flex justify-center">
                     <div class="infinte-scroll-request spinner my-8 text-4xl">&nbsp;</div>
                     <p class="infinite-scroll-last">End of content</p>
-                    <p class="infinite-scroll-error">Error</p>
+                    {{-- <p class="infinite-scroll-error">Error</p> --}}
                 </div>
             </div>
         </div> <!-- End-MyMovieList-movies -->

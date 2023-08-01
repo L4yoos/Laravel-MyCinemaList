@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\ViewModels\TvViewModel;
 use App\ViewModels\TvShowViewModel;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
 class TvController extends Controller
@@ -44,7 +43,13 @@ class TvController extends Controller
         $tvshow = Http::withToken(config('services.tmdb.token'))
         ->get('https://api.themoviedb.org/3/tv/'.$id.'?append_to_response=credits,videos,images,watch/providers')
         ->json();
+    
+        $exist = $tvshow['success'] ?? 1;
 
+        if($exist == false) {
+            abort(404);
+        }
+        
         $viewModel = new TvShowViewModel($tvshow);
 
         return view('tv.show', $viewModel);

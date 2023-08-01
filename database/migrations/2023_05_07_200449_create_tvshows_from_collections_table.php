@@ -21,7 +21,7 @@ return new class extends Migration
             $table->date('created_at');
             $table->timestamp('updated_at');
 
-            $table->foreign('collection_id')->references('id')->on('collections');
+            $table->foreign('collection_id')->references('id')->on('collections')->onDelete('cascade');;
         });
     }
 

@@ -3,8 +3,8 @@
 @section('content')
     <div class="container mx-auto px-4 pt-16">
         <div class="Random-Generator">
-            <div class="grid grid-cols-2 items-center">
-                <a href="{{ route('generator.random') }}">
+            <div class="grid grid-cols-2 md:grid-cols-2 items-center">
+                <a class="w-32" href="{{ route('generator.random') }}">
                     <button class="bg-orange-500 text-gray-900 rounded font-semibold px-2 py-2 hover:bg-orange-600 transition ease-in-out duration-150">Random Movie</button>
                 </a>
                 <div>

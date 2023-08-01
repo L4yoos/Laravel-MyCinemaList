@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\ViewModels\ActorsViewModel;
 use App\ViewModels\ActorViewModel;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Http\Request;
 
 class ActorsController extends Controller
 {
@@ -33,6 +32,17 @@ class ActorsController extends Controller
         $actor = Http::withToken(config('services.tmdb.token'))
         ->get('https://api.themoviedb.org/3/person/'.$id)
         ->json();
+
+        $exist = $actor['success'] ?? 1;
+
+        if($exist == false) {
+            abort(404);
+        }
+        // $actor = Http::withToken(config('services.tmdb.token'))
+        // ->get('https://api.themoviedb.org/3/person/'.$id.'?append_to_response=external_ids,combined_credits')
+        // ->json();
+
+        // $viewModel = new ActorViewModel($actor);
 
         $social = Http::withToken(config('services.tmdb.token'))
         ->get('https://api.themoviedb.org/3/person/'.$id.'/external_ids')
