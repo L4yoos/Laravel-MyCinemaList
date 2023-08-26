@@ -43,7 +43,7 @@ class TvController extends Controller
         $tvshow = Http::withToken(config('services.tmdb.token'))
         ->get('https://api.themoviedb.org/3/tv/'.$id.'?append_to_response=credits,videos,images,watch/providers')
         ->json();
-    
+        
         $exist = $tvshow['success'] ?? 1;
 
         if($exist == false) {
