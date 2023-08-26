@@ -74,7 +74,7 @@ class ActorViewModel extends ViewModel
                         : route('tv.show', $movie['id'])
                 ])->only([
                     'poster_path', 'title', 'id', 'media_type', 'linkToPage', 'character'
-                ]);
+                ])->dump();
             });
     }
 
