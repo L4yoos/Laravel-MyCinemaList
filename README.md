@@ -10,7 +10,7 @@ MyCinemaList to świetna aplikacja dla miłośników kina i seriali, którzy chc
 
 ## Demo
 
-Soon...
+[Project Website](https://konraddalecki.pl/)
 
 ##  Tech Stack
 
