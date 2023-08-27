@@ -54,7 +54,7 @@ class ActorViewModel extends ViewModel
     {
         $castMovies = collect($this->credits)->get('cast');
 
-        return collect($castMovies)->SortbyDesc('popularity')->unique('id')->take(5)
+        return collect($castMovies)->SortbyDesc('vote_count')->unique('id')->take(5)
             ->map(function ($movie) {
                 if (isset($movie['title'])) {
                     $title = $movie['title'];
@@ -74,7 +74,7 @@ class ActorViewModel extends ViewModel
                         : route('tv.show', $movie['id'])
                 ])->only([
                     'poster_path', 'title', 'id', 'media_type', 'linkToPage', 'character'
-                ])->dump();
+                ]);
             });
     }
 
