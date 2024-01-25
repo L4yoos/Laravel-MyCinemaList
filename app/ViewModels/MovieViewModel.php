@@ -5,6 +5,7 @@ namespace App\ViewModels;
 use Spatie\ViewModels\ViewModel;
 use Carbon\Carbon;
 use App\Models\Movies_Collection;
+use App\Models\User;
 
 class MovieViewModel extends ViewModel
 {
@@ -17,7 +18,9 @@ class MovieViewModel extends ViewModel
 
     private function checkIfUserHaveThis($movie)
     {
-        $movies = Movies_Collection::Where('movie_id', $movie)->first();
+        $user = User::find(\Auth::id());
+        $collection_id = $user->collection->id;
+        $movies = Movies_Collection::Where('movie_id', $movie)->Where('collection_id', $collection_id)->first();
         if($movies) return true;
         return false;
     }

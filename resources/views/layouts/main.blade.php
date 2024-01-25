@@ -32,7 +32,9 @@
                 </li>
             </ul>
             <div class="flex flex-col md:flex-row items-center ml-4">
-                <livewire:search-dropdown>
+                @livewire('search-dropdown')
+                {{-- @livewire('movie-search') --}}
+                {{-- <livewire:search-dropdown> --}}
                 <div class="md:ml-4 mt-3 md:mt-0">
                     <a href="#">
                         <div class="sm:flex sm:items-center sm:ml-6">

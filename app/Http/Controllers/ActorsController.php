@@ -44,6 +44,8 @@ class ActorsController extends Controller
 
         // $viewModel = new ActorViewModel($actor);
 
+        //append_to_response to nizej.
+
         $social = Http::withToken(config('services.tmdb.token'))
         ->get('https://api.themoviedb.org/3/person/'.$id.'/external_ids')
         ->json();

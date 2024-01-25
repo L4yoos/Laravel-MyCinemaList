@@ -11,16 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('Movies__collections', function (Blueprint $table) {
+        Schema::create('actors__collections', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('collection_id');
-            $table->unsignedBigInteger('movie_id')->unique();
-            $table->string('status');
-            $table->string('score');
+            $table->unsignedBigInteger('actor_id');
+            $table->string('img');
             $table->date('created_at');
             $table->timestamp('updated_at');
 
-            $table->foreign('collection_id')->references('id')->on('collections')->onDelete('cascade');;
+            $table->foreign('collection_id')->references('id')->on('collections')->onDelete('cascade');
         });
     }
 
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('movies__collections');
+        Schema::dropIfExists('actors_from_collections');
     }
 };

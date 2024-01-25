@@ -12,6 +12,10 @@ class Tvshows_Collection extends Model
     protected $fillable = [
         'collection_id',
         'tvshow_id',
+        'name',
+        'img',
+        'genres',
+        'number_of_episodes',
         'watched_episodes',
         'status',
         'score',

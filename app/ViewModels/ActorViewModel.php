@@ -3,6 +3,7 @@
 namespace App\ViewModels;
 
 use App\Models\Actors_Collection;
+use App\Models\User;
 use Spatie\ViewModels\ViewModel;
 use Carbon\Carbon;
 
@@ -119,7 +120,9 @@ class ActorViewModel extends ViewModel
 
     private function checkIfUserHaveThis($actor)
     {
-        $actors = Actors_Collection::Where('actor_id', $actor)->first();
+        $user = User::find(\Auth::id());
+        $collection_id = $user->collection->id;
+        $actors = Actors_Collection::Where('actor_id', $actor)->Where('collection_id', $collection_id)->first();
         if($actors) return true;
         return false;
     }

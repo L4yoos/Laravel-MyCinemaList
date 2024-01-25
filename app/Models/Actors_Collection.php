@@ -12,5 +12,6 @@ class Actors_Collection extends Model
     protected $fillable = [
         'collection_id',
         'actor_id',
+        'img'
     ];
 }

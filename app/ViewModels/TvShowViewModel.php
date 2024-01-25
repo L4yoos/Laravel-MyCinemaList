@@ -5,6 +5,7 @@ namespace App\ViewModels;
 use Spatie\ViewModels\ViewModel;
 use Carbon\Carbon;
 use App\Models\Tvshows_Collection;
+use App\Models\User;
 
 class TvShowViewModel extends ViewModel
 {
@@ -17,7 +18,9 @@ class TvShowViewModel extends ViewModel
 
     private function checkIfUserHaveThis($tvshow)
     {
-        $tvshows = Tvshows_Collection::Where('tvshow_id', $tvshow)->first();
+        $user = User::find(\Auth::id());
+        $collection_id = $user->collection->id;
+        $tvshows = Tvshows_Collection::Where('tvshow_id', $tvshow)->Where('collection_id', $collection_id)->first();
         if($tvshows) return true;
         return false;
     }

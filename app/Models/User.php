@@ -43,13 +43,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    // public function collection()
+    // {
+    //     return $this->hasOne(Collection::class);
+    // }
+
     public function collection()
     {
         return $this->hasOne(Collection::class);
     }
-
-    // public function collection(): BelongsTo
-    // {
-    //     return $this->belongsTo(Collection::class);
-    // }
 }

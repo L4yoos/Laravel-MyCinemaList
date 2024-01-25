@@ -14,14 +14,18 @@ return new class extends Migration
         Schema::create('tvshows__collections', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('collection_id');
-            $table->unsignedBigInteger('tvshow_id')->unique();
+            $table->unsignedBigInteger('tvshow_id');
             $table->integer('watched_episodes')->unsigned();
+            $table->integer('number_of_episodes')->unsigned();
+            $table->string('name');
+            $table->string('img');
+            $table->string('genres');
             $table->string('status');
             $table->string('score');
             $table->date('created_at');
             $table->timestamp('updated_at');
 
-            $table->foreign('collection_id')->references('id')->on('collections')->onDelete('cascade');;
+            $table->foreign('collection_id')->references('id')->on('collections')->onDelete('cascade');
         });
     }
 

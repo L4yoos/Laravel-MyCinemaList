@@ -109,7 +109,7 @@
                 {{-- @if(isset($movie['watch_providers']['PL']['flatrate'])) --}}
                 {{-- @foreach ($movie['watch_providers']['PL']['flatrate'] as $provider) --}}
                 @if(isset($movie['watch_providers']['PL']))
-                <div class="flex flex-row gap-2">
+                <div class="flex flex-col md:flex-row gap-2">
                     @if(isset($movie['watch_providers']['PL']['flatrate']))
                     <div class="mt-12">
                         <h4 class="text-white font-semibold">Where Can u Watch?</h4>

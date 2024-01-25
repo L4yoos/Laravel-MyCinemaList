@@ -16,6 +16,9 @@ class Movies_Collection extends Model
     protected $fillable = [
         'collection_id',
         'movie_id',
+        'name',
+        'img',
+        'genres',
         'status',
         'score',
     ];

@@ -117,7 +117,7 @@
                     <div class="flex mt-4">
                     @foreach ($tvshow['watch_providers']['PL']['flatrate'] as $provider)
                         <div class="mr-8">
-                            <img src="https://image.tmdb.org/t/p/w300{{ $provider['logo_path' ]}}" alt="logo" class="w-8 md:w-16">
+                            <img src="https://image.tmdb.org/t/p/w300{{ $provider['logo_path' ]}}" alt="logo" class="w-16 md:w-16">
                         </div>
                     @endforeach
                     </div>

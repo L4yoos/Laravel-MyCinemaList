@@ -1,13 +1,13 @@
 <div class="mt-8">
-    <a href="{{ route('actors.show', $actor['id']) }}">
-        <img src="{{ $actor['profile_path'] }}" alt="poster" class="hover:opacity-75 transition ease-in-out duration-150">
+    <a href="{{ route('actors.show', $actor['actor_id']) }}">
+        <img src="https://image.tmdb.org/t/p/w500{{ $actor['img'] }}" alt="poster" class="hover:opacity-75 transition ease-in-out duration-150">
     </a>
     <div x-data="{ isOpen: false }"> <!-- Add-Button -->
         <div class="mt-4">
             <button
                 @click="isOpen = true"
             >
-            <form action="{{ route('collections.Actordelete', $actor['id']) }}" method="post">
+            <form action="{{ route('collections.Actordelete', $actor['actor_id']) }}" method="post">
                 @csrf
                 @method('DELETE')
                 <button type="submit">

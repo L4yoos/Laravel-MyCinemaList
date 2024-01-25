@@ -1,20 +1,20 @@
-<div class="mt-8">
-    <a href="{{ route('movies.show', $movie['id']) }}">
-        <img src="{{ $movie['poster_path'] }}" alt="poster" class="hover:opacity-75 transition ease-in-out duration-150">
+<div class="movie mt-8">
+    <a href="{{ route('movies.show', $movie['movie_id']) }}">
+        <img src="https://image.tmdb.org/t/p/w500{{ $movie['img'] }}" alt="poster" class="hover:opacity-75 transition ease-in-out duration-150">
     </a>
     <div class="mt-2">
         @if($movie['status'] == 'Completed')
-        <a href="{{ route('movies.show', $movie['id']) }}" class="text-green-600 text-lg mt-2">{{ $movie['title'] }} (Completed)</a>
+        <a href="{{ route('movies.show', $movie['movie_id']) }}" class="text-green-600 text-lg mt-2">{{ $movie['name'] }} (Completed)</a>
         @elseif ($movie['status'] == 'Watching')
-        <a href="{{ route('movies.show', $movie['id']) }}" class="text-purple-600 text-lg mt-2">{{ $movie['title'] }} (Watching)</a>
+        <a href="{{ route('movies.show', $movie['movie_id']) }}" class="text-purple-600 text-lg mt-2">{{ $movie['name'] }} (Watching)</a>
         @elseif ($movie['status'] == 'On-Hold')
-        <a href="{{ route('movies.show', $movie['id']) }}" class="text-gray-600 text-lg mt-2">{{ $movie['title'] }} (On-Hold)</a>
+        <a href="{{ route('movies.show', $movie['movie_id']) }}" class="text-gray-600 text-lg mt-2">{{ $movie['name'] }} (On-Hold)</a>
         @elseif ($movie['status'] == 'Plan to Watch')
-        <a href="{{ route('movies.show', $movie['id']) }}" class="text-yellow-600 text-lg mt-2">{{ $movie['title'] }} (Plan To Watch)</a>
+        <a href="{{ route('movies.show', $movie['movie_id']) }}" class="text-yellow-600 text-lg mt-2">{{ $movie['name'] }} (Plan To Watch)</a>
         @elseif ($movie['status'] == 'Dropped')
-        <a href="{{ route('movies.show', $movie['id']) }}" class="text-red-600 text-lg mt-2">{{ $movie['title'] }} (Dropped)</a>
+        <a href="{{ route('movies.show', $movie['movie_id']) }}" class="text-red-600 text-lg mt-2">{{ $movie['name'] }} (Dropped)</a>
         @else
-        <a href="{{ route('movies.show', $movie['id']) }}" class="text-lg mt-2">{{ $movie['title'] }}</a>
+        <a href="{{ route('movies.show', $movie['movie_id']) }}" class="text-lg mt-2">{{ $movie['name'] }}</a>
         @endif
         <div class="flex items-center text-gray-400 text-sm mt-1">
             <svg class="fill-current text-orange-500 w-4" viewBox="0 0 24 24"><g data-name="Layer 2"><path d="M17.56 21a1 1 0 01-.46-.11L12 18.22l-5.1 2.67a1 1 0 01-1.45-1.06l1-5.63-4.12-4a1 1 0 01-.25-1 1 1 0 01.81-.68l5.7-.83 2.51-5.13a1 1 0 011.8 0l2.54 5.12 5.7.83a1 1 0 01.81.68 1 1 0 01-.25 1l-4.12 4 1 5.63a1 1 0 01-.4 1 1 1 0 01-.62.18z" data-name="star"/></g></svg>
@@ -24,7 +24,7 @@
                     <span class="ml-1">{{ $movie['status'] }}</span>
             @endif
             <span class="mx-2">|</span>
-            <span>{{ $movie['release_date'] }}</span>
+            <span>{{ $movie['date'] }}</span>
         </div>
         <div class="text-gray-400 text-sm">{{ $movie['genres'] }}</div>
         
@@ -35,8 +35,8 @@
                     class="mt-2 text-white rounded font-semibold transition ease-in-out duration-150"
                 >
                 <svg class="svg-icon" viewBox="0 0 20 20">
-					<path d="M6.176,7.241V6.78c0-0.221-0.181-0.402-0.402-0.402c-0.221,0-0.403,0.181-0.403,0.402v0.461C4.79,7.416,4.365,7.955,4.365,8.591c0,0.636,0.424,1.175,1.006,1.35v3.278c0,0.222,0.182,0.402,0.403,0.402c0.222,0,0.402-0.181,0.402-0.402V9.941c0.582-0.175,1.006-0.714,1.006-1.35C7.183,7.955,6.758,7.416,6.176,7.241 M5.774,9.195c-0.332,0-0.604-0.272-0.604-0.604c0-0.332,0.272-0.604,0.604-0.604c0.332,0,0.604,0.272,0.604,0.604C6.377,8.923,6.105,9.195,5.774,9.195 M10.402,10.058V6.78c0-0.221-0.181-0.402-0.402-0.402c-0.222,0-0.402,0.181-0.402,0.402v3.278c-0.582,0.175-1.006,0.714-1.006,1.35c0,0.637,0.424,1.175,1.006,1.351v0.461c0,0.222,0.181,0.402,0.402,0.402c0.221,0,0.402-0.181,0.402-0.402v-0.461c0.582-0.176,1.006-0.714,1.006-1.351C11.408,10.772,10.984,10.233,10.402,10.058M10,12.013c-0.333,0-0.604-0.272-0.604-0.604S9.667,10.805,10,10.805c0.332,0,0.604,0.271,0.604,0.604S10.332,12.013,10,12.013M14.629,8.448V6.78c0-0.221-0.182-0.402-0.403-0.402c-0.221,0-0.402,0.181-0.402,0.402v1.668c-0.581,0.175-1.006,0.714-1.006,1.35c0,0.636,0.425,1.176,1.006,1.351v2.07c0,0.222,0.182,0.402,0.402,0.402c0.222,0,0.403-0.181,0.403-0.402v-2.07c0.581-0.175,1.006-0.715,1.006-1.351C15.635,9.163,15.21,8.624,14.629,8.448 M14.226,10.402c-0.331,0-0.604-0.272-0.604-0.604c0-0.332,0.272-0.604,0.604-0.604c0.332,0,0.604,0.272,0.604,0.604C14.83,10.13,14.558,10.402,14.226,10.402 M17.647,3.962H2.353c-0.221,0-0.402,0.181-0.402,0.402v11.27c0,0.222,0.181,0.402,0.402,0.402h15.295c0.222,0,0.402-0.181,0.402-0.402V4.365C18.05,4.144,17.869,3.962,17.647,3.962 M17.245,15.232H2.755V4.768h14.49V15.232z"></path>
-				</svg>
+                    <path d="M6.176,7.241V6.78c0-0.221-0.181-0.402-0.402-0.402c-0.221,0-0.403,0.181-0.403,0.402v0.461C4.79,7.416,4.365,7.955,4.365,8.591c0,0.636,0.424,1.175,1.006,1.35v3.278c0,0.222,0.182,0.402,0.403,0.402c0.222,0,0.402-0.181,0.402-0.402V9.941c0.582-0.175,1.006-0.714,1.006-1.35C7.183,7.955,6.758,7.416,6.176,7.241 M5.774,9.195c-0.332,0-0.604-0.272-0.604-0.604c0-0.332,0.272-0.604,0.604-0.604c0.332,0,0.604,0.272,0.604,0.604C6.377,8.923,6.105,9.195,5.774,9.195 M10.402,10.058V6.78c0-0.221-0.181-0.402-0.402-0.402c-0.222,0-0.402,0.181-0.402,0.402v3.278c-0.582,0.175-1.006,0.714-1.006,1.35c0,0.637,0.424,1.175,1.006,1.351v0.461c0,0.222,0.181,0.402,0.402,0.402c0.221,0,0.402-0.181,0.402-0.402v-0.461c0.582-0.176,1.006-0.714,1.006-1.351C11.408,10.772,10.984,10.233,10.402,10.058M10,12.013c-0.333,0-0.604-0.272-0.604-0.604S9.667,10.805,10,10.805c0.332,0,0.604,0.271,0.604,0.604S10.332,12.013,10,12.013M14.629,8.448V6.78c0-0.221-0.182-0.402-0.403-0.402c-0.221,0-0.402,0.181-0.402,0.402v1.668c-0.581,0.175-1.006,0.714-1.006,1.35c0,0.636,0.425,1.176,1.006,1.351v2.07c0,0.222,0.182,0.402,0.402,0.402c0.222,0,0.403-0.181,0.403-0.402v-2.07c0.581-0.175,1.006-0.715,1.006-1.351C15.635,9.163,15.21,8.624,14.629,8.448 M14.226,10.402c-0.331,0-0.604-0.272-0.604-0.604c0-0.332,0.272-0.604,0.604-0.604c0.332,0,0.604,0.272,0.604,0.604C14.83,10.13,14.558,10.402,14.226,10.402 M17.647,3.962H2.353c-0.221,0-0.402,0.181-0.402,0.402v11.27c0,0.222,0.181,0.402,0.402,0.402h15.295c0.222,0,0.402-0.181,0.402-0.402V4.365C18.05,4.144,17.869,3.962,17.647,3.962 M17.245,15.232H2.755V4.768h14.49V15.232z"></path>
+                </svg>
                 </button>
             </div>
             <template x-if="isOpen">
@@ -54,7 +54,7 @@
                             </button>
                         </div>
                     <div class="modal-body px-8 py-8">
-                        <form action="{{ route('collections.update', $movie['id']) }}" method="POST">
+                        <form action="{{ route('collections.update', $movie['movie_id']) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <div class="grid gap-4 mb-4 sm:grid-cols-2">
